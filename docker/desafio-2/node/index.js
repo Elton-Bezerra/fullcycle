@@ -12,8 +12,14 @@ const config = {
 const mysql = require('mysql')
 const connection = mysql.createConnection(config)
 
+const create_table_statement = `CREATE TABLE IF NOT EXISTS people(
+    id int not null auto_increment,
+    name varchar(255),
+    primary key (id)
+ )`;
 const sql = `INSERT INTO people(name) values('Wesley')`
-connection.query(sql)
+connection.query(create_table_statement);
+connection.query(sql);
 
 
 app.get('/', async (req, res) => {

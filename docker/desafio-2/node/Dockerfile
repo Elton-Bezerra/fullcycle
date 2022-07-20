@@ -12,6 +12,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 COPY . /usr/src/app
 
+RUN npm install
 EXPOSE 3000
 
 CMD ["node", "index.js"]
