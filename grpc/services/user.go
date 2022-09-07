@@ -5,17 +5,10 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
 	"time"
 
 	"github.com/Elton-Bezerra/fullcycle/pb"
 )
-
-// type UserServiceServer interface {
-// 	AddUser(context.Context, *User) (*User, error)
-// 	mustEmbedUnimplementedUserServiceServer()
-//AddUserVerbose(ctx context.Context, in *User, opts ...grpc.CallOption) (UserService_AddUserVerboseClient, error)
-// }
 
 type UserService struct {
 	pb.UnimplementedUserServiceServer
@@ -29,7 +22,7 @@ func (*UserService) AddUser(ctx context.Context, req *pb.User) (*pb.User, error)
 
 	// Insert on Database
 
-	fmt.Fprintln(os.Stdout, req.Name)
+	fmt.Println(req.Name)
 
 	return &pb.User{
 		Id:    "123",
@@ -98,5 +91,28 @@ func (*UserService) AddUsers(stream pb.UserService_AddUsersServer) error {
 			Email: req.GetEmail(),
 		})
 		fmt.Println("Adding", req.GetName())
+	}
+}
+
+func (*UserService) AddUsersStreamBoth(stream pb.UserService_AddUsersStreamBothServer) error {
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			return nil //se não houver mais msgs do client, retorna nil e encerra o stream do lado do server
+		}
+
+		if err != nil {
+			log.Fatalf("Error receiving stream from the client: %v", err)
+		}
+
+		time.Sleep(time.Millisecond * 500)
+		err = stream.Send(&pb.UserResultStream{
+			Status: "Added",
+			User:   req,
+		})
+
+		if err != nil {
+			log.Fatalf("Error sending stream to the client: %v", err)
+		}
 	}
 }
