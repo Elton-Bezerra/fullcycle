@@ -72,27 +72,27 @@ func AddUserVerbose(client pb.UserServiceClient) {
 
 func AddUsers(client pb.UserServiceClient) {
 	reqs := []*pb.User{
-		&pb.User{
+		{
 			Id:    "1",
 			Name:  "Elton",
 			Email: "test@hotmail.com",
 		},
-		&pb.User{
+		{
 			Id:    "2",
 			Name:  "Wesley",
 			Email: "test@hotmail.com",
 		},
-		&pb.User{
+		{
 			Id:    "3",
 			Name:  "Weasley",
 			Email: "test@hotmail.com",
 		},
-		&pb.User{
+		{
 			Id:    "4",
 			Name:  "Test",
 			Email: "test@hotmail.com",
 		},
-		&pb.User{
+		{
 			Id:    "5",
 			Name:  "Another Test",
 			Email: "test@hotmail.com",
